@@ -171,19 +171,12 @@ class TransaksiController extends Controller
     {
         // Validasi data input
         $validator = Validator::make($request->all(), [
-            'nomor_transaksi' => 'required|exists:trx_header,nomor_trx',
-            'tanggal' => 'required|date',
-            'dinas_id' => 'required|exists:dinas,kode',
-            'kegiatan_id' => 'required|exists:kegiatan,kode',
-            'akun_id' => 'required|integer|exists:akun_1,kode|exists:akun_2,kode|exists:akun_3,kode',
-            'nilai' => ['required', 'regex:/^\d{1,3}(\.\d{3})*(,\d+)?$/'],
-        ], [
-            'nomor_transaksi.exists' => 'Nomor transaksi tidak ditemukan!',
-            'tanggal.date' => 'Format tanggal tidak valid!',
-            'dinas_id.exists' => 'Dinas tidak ditemukan!',
-            'kegiatan_id.exists' => 'Kegiatan tidak ditemukan!',
-            'akun_id.exists' => 'Akun tidak ditemukan!',
-            'nilai.regex' => 'Format nilai harus menggunakan titik untuk ribuan dan koma untuk desimal!',
+            'nomor_transaksi' => 'required',
+            'tanggal' => 'required',
+            'dinas_id' => 'required',
+            'kegiatan_id' => 'required',
+            'akun_id' => 'required',
+            'nilai' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -207,17 +200,17 @@ class TransaksiController extends Controller
 
             // Konversi nilai agar bisa disimpan ke database
             $nilai_baru = str_replace('.', '', $request->nilai);
-            $nilai_lama = $trx_detail->nilai;
+            $nilai_lama = str_replace('.', '', $trx_detail->nilai);
 
             // Update total di trx_header
             DB::table('trx_header')->where('nomor_trx', $request->nomor_transaksi)->update([
-                'total' => ($trx_header->total - $nilai_lama) + $nilai_baru,
+                'total' => number_format($trx_header->total - $nilai_lama + $nilai_baru, 0, ',', '.'),
+                'tanggal' => $request->tanggal,
                 'updated_at' => now(),
             ]);
 
             // Update transaksi detail
             DB::table('trx_detail')->where('nomor_trx', $id)->update([
-                'tanggal' => $request->tanggal,
                 'dinas' => $request->dinas_id,
                 'akun' => $request->akun_id,
                 'nilai' => $nilai_baru,

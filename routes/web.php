@@ -26,7 +26,6 @@ Route::middleware('auth')->group(function () {
     // Master
     Route::prefix('/master')->name('master.')->group(function () {
 
-
         // Dinas
         Route::prefix('/dinas')->name('dinas.')->controller(DinasController::class)->group(function () {
             Route::get('/index', 'index')->name('index');
@@ -59,9 +58,6 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}/update', 'update')->name('update');
             Route::delete('/{id}/destroy', 'destroy')->name('destroy');
         });
-
-
-
 
     });
 

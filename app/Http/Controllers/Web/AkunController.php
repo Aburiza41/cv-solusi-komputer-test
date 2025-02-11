@@ -123,7 +123,7 @@ class AkunController extends Controller
 
         $akun = DB::table($table)->where('kode', $id)->first();
         if (!$akun) {
-            return redirect()->route('akun.index')->with('error', 'Data tidak ditemukan!');
+            return redirect()->route('master.akun.index')->with('error', 'Data tidak ditemukan!');
         }
 
         return view('pages.akun.edit', compact('akun'));

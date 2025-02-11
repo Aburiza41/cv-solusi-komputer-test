@@ -70,7 +70,7 @@
 
                             {{-- Input Nilai --}}
                             <label class="block mt-4 font-medium text-sm text-gray-700 dark:text-gray-300">Nilai</label>
-                            <input type="text" name="nilai" value="{{ number_format($trx_detail->nilai, 0, ',', '.') }}"
+                            <input type="text" name="nilai" value="{{ $trx_detail->nilai }}"
                                 class="w-full px-4 py-2 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-300 dark:bg-gray-900" required>
                         </div>
 

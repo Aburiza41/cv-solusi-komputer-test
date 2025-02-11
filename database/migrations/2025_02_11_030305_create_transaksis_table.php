@@ -25,7 +25,7 @@ return new class extends Migration
 
         Schema::create('trx_detail', function (Blueprint $table) {
             // Nomor | Primary Key
-            $table->string('nomor_trx')->unique();
+            $table->string('nomor_trx');
             // Kode Dinas | Foreign Key
             $table->foreignId('dinas');
             $table->foreignId('kegiatan');
